@@ -101,9 +101,7 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
-                controller: TextEditingController(
-                  text: controller.rate.value.toString(),
-                ),
+
                 onChanged: controller.setRate,
                 validator: (value) {
                   if (value == null ||

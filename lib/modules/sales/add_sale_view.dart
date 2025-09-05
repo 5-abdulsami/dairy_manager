@@ -71,9 +71,7 @@ class AddSaleView extends GetView<AddSaleController> {
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
-                controller: TextEditingController(
-                  text: controller.rate.value.toString(),
-                ),
+
                 onChanged: controller.setRate,
                 validator: (value) {
                   if (value == null ||
