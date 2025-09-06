@@ -166,7 +166,7 @@ class ReportsView extends GetView<ReportsController> {
             ),
             SizedBox(height: 8),
             Text(
-              '${AppConstants.currency}${controller.profit.value.abs().toStringAsFixed(2)}',
+              '${AppConstants.currency}${controller.profit.value.abs().toStringAsFixed(0)}',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,

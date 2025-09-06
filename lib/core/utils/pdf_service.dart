@@ -40,7 +40,7 @@ class PdfService {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
-          'Dairy Shop Report',
+          'Mankiala Milk Shop Report',
           style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
         ),
         pw.Text(
@@ -75,7 +75,7 @@ class PdfService {
             children: [
               pw.Text('Total Purchases:'),
               pw.Text(
-                '${AppConstants.currency}${report.totalPurchases.toStringAsFixed(2)}',
+                '${AppConstants.currency}${report.totalPurchases.toStringAsFixed(0)}',
               ),
             ],
           ),
@@ -85,7 +85,7 @@ class PdfService {
             children: [
               pw.Text('Total Sales:'),
               pw.Text(
-                '${AppConstants.currency}${report.totalSales.toStringAsFixed(2)}',
+                '${AppConstants.currency}${report.totalSales.toStringAsFixed(0)}',
               ),
             ],
           ),
@@ -95,7 +95,7 @@ class PdfService {
             children: [
               pw.Text('Profit/Loss:'),
               pw.Text(
-                '${AppConstants.currency}${report.profit.toStringAsFixed(2)}',
+                '${AppConstants.currency}${report.profit.toStringAsFixed(0)}',
                 style: pw.TextStyle(
                   color: report.profit >= 0 ? PdfColors.green : PdfColors.red,
                   fontWeight: pw.FontWeight.bold,
@@ -154,6 +154,13 @@ class PdfService {
                     pw.Padding(
                       padding: pw.EdgeInsets.all(5),
                       child: pw.Text(
+                        'Quanitity',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
                         'Amount',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                       ),
@@ -176,6 +183,10 @@ class PdfService {
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(purchase.productType),
+                          ),
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
                             child: pw.Text(
                               '${purchase.quantity} ${purchase.unit}',
                             ),
@@ -183,7 +194,7 @@ class PdfService {
                           pw.Padding(
                             padding: pw.EdgeInsets.all(5),
                             child: pw.Text(
-                              '${AppConstants.currency}${purchase.totalAmount.toStringAsFixed(2)}',
+                              '${AppConstants.currency}${purchase.totalAmount.toStringAsFixed(0)}',
                             ),
                           ),
                         ],
@@ -270,7 +281,7 @@ class PdfService {
                           pw.Padding(
                             padding: pw.EdgeInsets.all(5),
                             child: pw.Text(
-                              '${AppConstants.currency}${sale.totalAmount.toStringAsFixed(2)}',
+                              '${AppConstants.currency}${sale.totalAmount.toStringAsFixed(0)}',
                             ),
                           ),
                         ],
