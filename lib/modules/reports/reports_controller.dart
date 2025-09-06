@@ -1,5 +1,8 @@
 // lib/modules/reports/reports_controller.dart
+import 'package:dairy_manager/data/models/purchase_model.dart';
+import 'package:dairy_manager/data/models/sale_model.dart';
 import 'package:get/get.dart';
+import 'package:dairy_manager/data/models/report_model.dart';
 import 'package:dairy_manager/data/repositories/purchase_repository.dart';
 import 'package:dairy_manager/data/repositories/sale_repository.dart';
 
@@ -13,6 +16,8 @@ class ReportsController extends GetxController {
   var totalPurchases = 0.0.obs;
   var totalSales = 0.0.obs;
   var profit = 0.0.obs;
+  var purchases = <Purchase>[].obs;
+  var sales = <Sale>[].obs;
 
   @override
   void onInit() {
@@ -23,6 +28,7 @@ class ReportsController extends GetxController {
   Future<void> loadReportData() async {
     isLoading.value = true;
     try {
+      // Get totals
       totalPurchases.value = await purchaseRepository
           .getTotalPurchasesByDateRange(
             filterStartDate.value,
@@ -30,6 +36,17 @@ class ReportsController extends GetxController {
           );
 
       totalSales.value = await saleRepository.getTotalSalesByDateRange(
+        filterStartDate.value,
+        filterEndDate.value,
+      );
+
+      // Get detailed lists
+      purchases.value = await purchaseRepository.getPurchasesByDateRange(
+        filterStartDate.value,
+        filterEndDate.value,
+      );
+
+      sales.value = await saleRepository.getSalesByDateRange(
         filterStartDate.value,
         filterEndDate.value,
       );
@@ -46,5 +63,17 @@ class ReportsController extends GetxController {
     filterStartDate.value = start;
     filterEndDate.value = end;
     loadReportData();
+  }
+
+  Report generateReport() {
+    return Report(
+      startDate: filterStartDate.value,
+      endDate: filterEndDate.value,
+      totalPurchases: totalPurchases.value,
+      totalSales: totalSales.value,
+      profit: profit.value,
+      purchases: purchases.value,
+      sales: sales.value,
+    );
   }
 }

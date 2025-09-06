@@ -2,7 +2,7 @@
 class Sale {
   int? id;
   double quantity;
-  int rate;
+  double rate;
   double totalAmount;
   DateTime date;
   String productType;

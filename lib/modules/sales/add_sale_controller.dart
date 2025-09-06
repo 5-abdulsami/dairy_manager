@@ -8,7 +8,7 @@ class AddSaleController extends GetxController {
   final SaleRepository saleRepository = Get.find();
 
   var quantity = 0.0.obs;
-  var rate = 0.obs;
+  var rate = 0.0.obs;
   var totalAmount = 0.0.obs;
   var date = DateTime.now().obs;
   var productType = AppConstants.milk.obs;
@@ -22,7 +22,7 @@ class AddSaleController extends GetxController {
   }
 
   void setRate(String value) {
-    rate.value = int.tryParse(value) ?? 0;
+    rate.value = double.tryParse(value) ?? 0.0;
     calculateTotal();
   }
 
