@@ -26,6 +26,7 @@ class Purchase {
     return {
       'id': id,
       'supplierId': supplierId,
+      'supplierName': supplierName,
       'quantity': quantity,
       'rate': rate,
       'totalAmount': totalAmount,

@@ -1,4 +1,6 @@
 // lib/routes/app_pages.dart
+import 'package:dairy_manager/modules/backup/backup_binding.dart';
+import 'package:dairy_manager/modules/backup/backup_view.dart';
 import 'package:dairy_manager/modules/dashboard/dashboard_binding.dart';
 import 'package:dairy_manager/modules/dashboard/dashboard_view.dart';
 import 'package:dairy_manager/modules/purchases/add_purchases_view.dart';
@@ -53,6 +55,12 @@ class AppPages {
       name: _Paths.REPORTS,
       page: () => ReportsView(),
       binding: ReportsBinding(),
+    ),
+    // In app_pages.dart
+    GetPage(
+      name: _Paths.BACKUP,
+      page: () => BackupView(),
+      binding: BackupBinding(),
     ),
   ];
 }

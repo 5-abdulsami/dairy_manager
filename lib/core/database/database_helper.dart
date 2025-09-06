@@ -39,6 +39,7 @@ class DatabaseHelper {
       CREATE TABLE purchases(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         supplierId INTEGER NOT NULL,
+        supplierName TEXT NOT NULL,
         quantity REAL NOT NULL,
         rate REAL NOT NULL,
         totalAmount REAL NOT NULL,

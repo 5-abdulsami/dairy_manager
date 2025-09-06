@@ -11,6 +11,7 @@ abstract class Routes {
   static const SALES = _Paths.SALES;
   static const ADD_SALE = _Paths.ADD_SALE;
   static const REPORTS = _Paths.REPORTS;
+  static const BACKUP = _Paths.BACKUP;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const SALES = '/sales';
   static const ADD_SALE = '/add-sale';
   static const REPORTS = '/reports';
+  static const BACKUP = '/backup';
 }
