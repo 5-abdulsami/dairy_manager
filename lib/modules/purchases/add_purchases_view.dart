@@ -1,6 +1,7 @@
 // lib/modules/purchases/add_purchase_view.dart
 import 'package:dairy_manager/core/widgets/custom_button.dart';
 import 'package:dairy_manager/data/models/supplier_model.dart';
+import 'package:dairy_manager/main.dart';
 import 'package:dairy_manager/modules/purchases/add_purchases_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +20,7 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
     return Scaffold(
       appBar: AppBar(title: Text('Add Purchase')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenHeight * 0.02),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -49,7 +50,7 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
               Row(
                 children: [
                   Expanded(
@@ -71,7 +72,7 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: screenWidth * 0.045),
                   Expanded(
                     flex: 2,
                     child: DropdownButtonFormField<String>(
@@ -112,7 +113,7 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Product Type *',
@@ -128,30 +129,39 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
                     }).toList(),
                 onChanged: (value) => controller.setProductType(value!),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.015),
               TextButton(
                 onPressed: () => _selectDate(context),
                 child: Row(
                   children: [
                     Icon(Icons.calendar_today),
-                    SizedBox(width: 8),
-                    Text('Date: ${dateFormat.format(controller.date.value)}'),
+                    SizedBox(width: screenWidth * 0.02),
+                    Text(
+                      'Date: ${dateFormat.format(controller.date.value)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.01),
               Obx(
                 () => Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(screenHeight * 0.022),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Calculation Summary',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenHeight * 0.025,
+                          ),
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: screenHeight * 0.01),
                         Text(
                           'Quantity: ${controller.quantity.value} ${controller.unit.value}',
                         ),
@@ -162,12 +172,12 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
                         Text(
                           'Rate: ${AppConstants.currency}${controller.rate.value}/kg',
                         ),
-                        Divider(),
+                        Divider(thickness: 2, height: screenHeight * 0.03),
                         Text(
                           'Total Amount: ${AppConstants.currency}${controller.totalAmount.value.toStringAsFixed(0)}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: screenHeight * 0.028,
                           ),
                         ),
                       ],
@@ -175,7 +185,7 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
                   ),
                 ),
               ),
-              SizedBox(height: 24),
+              SizedBox(height: screenHeight * 0.033),
               Obx(
                 () =>
                     controller.isLoading.value

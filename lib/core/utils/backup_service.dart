@@ -23,8 +23,7 @@ class BackupService {
     return status.isGranted;
   }
 
-  // Export all data to a JSON file (let user choose location)
-  // lib/core/utils/backup_service.dart - Update the exportData method
+  // Export all data to a JSON file
   static Future<File?> exportData() async {
     try {
       if (!await requestStoragePermission()) {
@@ -36,13 +35,19 @@ class BackupService {
       final purchases = await _purchaseRepo.getAllPurchases();
       final sales = await _saleRepo.getAllSales();
 
-      // Convert to JSON
+      // Convert to JSON - REMOVE supplierName from purchases
       final backupData = {
         'app_name': 'Mankiala Milk Shop',
         'backup_date': DateTime.now().toIso8601String(),
         'version': '1.0.0',
         'suppliers': suppliers.map((s) => s.toMap()).toList(),
-        'purchases': purchases.map((p) => p.toMap()).toList(),
+        'purchases':
+            purchases.map((p) {
+              final map = p.toMap();
+              // Ensure supplierName is not included in the backup
+              map.remove('supplierName');
+              return map;
+            }).toList(),
         'sales': sales.map((s) => s.toMap()).toList(),
       };
 
@@ -50,14 +55,14 @@ class BackupService {
       final jsonString = jsonEncode(backupData);
       final bytes = utf8.encode(jsonString);
 
-      // Let user choose save location - FIXED: Provide bytes instead of path
+      // Let user choose save location
       final String? savePath = await FilePicker.platform.saveFile(
         dialogTitle: 'Save Backup File',
         fileName:
             'mankiala_milk_shop_backup_${DateTime.now().millisecondsSinceEpoch}.json',
         allowedExtensions: ['json'],
         type: FileType.custom,
-        bytes: bytes, // Add this line to provide the file content
+        bytes: bytes,
       );
 
       if (savePath == null) {
@@ -65,14 +70,13 @@ class BackupService {
         return null;
       }
 
-      // Return the file reference (file_picker already saved it)
+      // Return the file reference
       return File(savePath);
     } catch (e) {
       throw Exception('Failed to export data: $e');
     }
   }
 
-  // Import data from JSON file (let user choose file)
   static Future<void> importData() async {
     try {
       if (!await requestStoragePermission()) {
@@ -115,15 +119,14 @@ class BackupService {
         await txn.delete('purchases');
         await txn.delete('sales');
 
-        // Import suppliers - FIX NULL CHECK ERROR
+        // Import suppliers
         final suppliers = backupData['suppliers'] as List? ?? [];
         for (final supplierData in suppliers) {
-          // Handle null values safely
           final mappedData = {
             'id': supplierData['id'],
-            'name': supplierData['name'] ?? '',
+            'name': supplierData['name'] ?? 'Unknown Supplier',
             'phoneNumber': supplierData['phoneNumber'],
-            'productType': supplierData['productType'] ?? '',
+            'productType': supplierData['productType'] ?? 'Milk',
             'rate': (supplierData['rate'] as num?)?.toDouble() ?? 0.0,
             'createdAt':
                 supplierData['createdAt'] ?? DateTime.now().toIso8601String(),
@@ -131,43 +134,41 @@ class BackupService {
           await txn.insert('suppliers', mappedData);
         }
 
-        // Import purchases - FIX NULL CHECK ERROR
+        // Import purchases - REMOVE supplierName handling completely
         final purchases = backupData['purchases'] as List? ?? [];
         for (final purchaseData in purchases) {
-          // Handle null values safely
           final mappedData = {
             'id': purchaseData['id'],
             'supplierId': purchaseData['supplierId'] ?? 0,
-            'supplierName': purchaseData['supplierName'] ?? '',
             'quantity': (purchaseData['quantity'] as num?)?.toDouble() ?? 0.0,
             'rate': (purchaseData['rate'] as num?)?.toDouble() ?? 0.0,
             'totalAmount':
                 (purchaseData['totalAmount'] as num?)?.toDouble() ?? 0.0,
             'date': purchaseData['date'] ?? DateTime.now().toIso8601String(),
-            'productType': purchaseData['productType'] ?? '',
-            'unit': purchaseData['unit'] ?? '',
+            'productType': purchaseData['productType'] ?? 'Milk',
+            'unit': purchaseData['unit'] ?? 'kg',
           };
           await txn.insert('purchases', mappedData);
         }
 
-        // Import sales - FIX NULL CHECK ERROR
+        // Import sales
         final sales = backupData['sales'] as List? ?? [];
         for (final saleData in sales) {
-          // Handle null values safely
           final mappedData = {
             'id': saleData['id'],
             'quantity': (saleData['quantity'] as num?)?.toDouble() ?? 0.0,
             'rate': (saleData['rate'] as num?)?.toDouble() ?? 0.0,
             'totalAmount': (saleData['totalAmount'] as num?)?.toDouble() ?? 0.0,
             'date': saleData['date'] ?? DateTime.now().toIso8601String(),
-            'productType': saleData['productType'] ?? '',
-            'unit': saleData['unit'] ?? '',
+            'productType': saleData['productType'] ?? 'Milk',
+            'unit': saleData['unit'] ?? 'kg',
           };
           await txn.insert('sales', mappedData);
         }
       });
     } catch (e) {
-      throw Exception('Failed to import data: $e');
+      print('Restore error details: $e');
+      throw Exception('Failed to import data: ${e.toString()}');
     }
   }
 

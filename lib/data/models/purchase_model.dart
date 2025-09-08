@@ -2,7 +2,7 @@
 class Purchase {
   int? id;
   int supplierId;
-  String supplierName;
+  String supplierName; // This will come from JOIN queries only
   double quantity;
   double rate;
   double totalAmount;
@@ -13,7 +13,7 @@ class Purchase {
   Purchase({
     this.id,
     required this.supplierId,
-    required this.supplierName,
+    required this.supplierName, // Keep this but handle it properly
     required this.quantity,
     required this.rate,
     required this.totalAmount,
@@ -26,7 +26,6 @@ class Purchase {
     return {
       'id': id,
       'supplierId': supplierId,
-      'supplierName': supplierName,
       'quantity': quantity,
       'rate': rate,
       'totalAmount': totalAmount,
@@ -40,10 +39,25 @@ class Purchase {
     return Purchase(
       id: map['id'],
       supplierId: map['supplierId'],
-      supplierName: map['supplierName'] ?? '',
-      quantity: map['quantity'],
-      rate: map['rate'],
-      totalAmount: map['totalAmount'],
+      supplierName: map['supplierName'] ?? '', // Keep this for JOIN queries
+      quantity: (map['quantity'] as num).toDouble(),
+      rate: (map['rate'] as num).toDouble(),
+      totalAmount: (map['totalAmount'] as num).toDouble(),
+      date: DateTime.parse(map['date']),
+      productType: map['productType'],
+      unit: map['unit'],
+    );
+  }
+
+  // Add a factory method for database rows (without supplierName)
+  factory Purchase.fromDbMap(Map<String, dynamic> map) {
+    return Purchase(
+      id: map['id'],
+      supplierId: map['supplierId'],
+      supplierName: '', // Will be empty for database rows
+      quantity: (map['quantity'] as num).toDouble(),
+      rate: (map['rate'] as num).toDouble(),
+      totalAmount: (map['totalAmount'] as num).toDouble(),
       date: DateTime.parse(map['date']),
       productType: map['productType'],
       unit: map['unit'],

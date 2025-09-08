@@ -1,5 +1,6 @@
 // lib/modules/sales/add_sale_view.dart
 import 'package:dairy_manager/core/widgets/custom_button.dart';
+import 'package:dairy_manager/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,7 @@ class AddSaleView extends GetView<AddSaleController> {
     return Scaffold(
       appBar: AppBar(title: Text('Add Sale')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenHeight * 0.02),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -41,7 +42,7 @@ class AddSaleView extends GetView<AddSaleController> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: screenHeight * 0.025),
                   Expanded(
                     flex: 2,
                     child: DropdownButtonFormField<String>(
@@ -64,7 +65,7 @@ class AddSaleView extends GetView<AddSaleController> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Rate per kg (Rs.) *',
@@ -82,7 +83,7 @@ class AddSaleView extends GetView<AddSaleController> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Product Type *',
@@ -98,30 +99,39 @@ class AddSaleView extends GetView<AddSaleController> {
                     }).toList(),
                 onChanged: (value) => controller.setProductType(value!),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
               TextButton(
                 onPressed: () => _selectDate(context),
                 child: Row(
                   children: [
                     Icon(Icons.calendar_today),
-                    SizedBox(width: 8),
-                    Text('Date: ${dateFormat.format(controller.date.value)}'),
+                    SizedBox(width: screenWidth * 0.02),
+                    Text(
+                      'Date: ${dateFormat.format(controller.date.value)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: screenHeight * 0.025,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
               Obx(
                 () => Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(screenHeight * 0.022),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Calculation Summary',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenHeight * 0.025,
+                          ),
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: screenHeight * 0.01),
                         Text(
                           'Quantity: ${controller.quantity.value} ${controller.unit.value}',
                         ),
@@ -132,12 +142,12 @@ class AddSaleView extends GetView<AddSaleController> {
                         Text(
                           'Rate: ${AppConstants.currency}${controller.rate.value}/kg',
                         ),
-                        Divider(),
+                        Divider(thickness: 2, height: screenHeight * 0.03),
                         Text(
                           'Total Amount: ${AppConstants.currency}${controller.totalAmount.value.toStringAsFixed(0)}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: screenHeight * 0.028,
                           ),
                         ),
                       ],

@@ -1,5 +1,6 @@
 // lib/modules/suppliers/suppliers_view.dart
 import 'package:dairy_manager/data/models/supplier_model.dart';
+import 'package:dairy_manager/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dairy_manager/core/constants/app_constants.dart';
@@ -35,7 +36,7 @@ class SuppliersView extends GetView<SuppliersController> {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(screenHeight * 0.02),
               child: Text(
                 'Filter: ${controller.filterProductType.value}',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -58,7 +59,10 @@ class SuppliersView extends GetView<SuppliersController> {
 
   Widget _buildSupplierCard(BuildContext context, Supplier supplier) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.048,
+        vertical: screenHeight * 0.01,
+      ),
       child: ListTile(
         title: Text(
           supplier.name,

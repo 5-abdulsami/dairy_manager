@@ -1,4 +1,5 @@
 // lib/modules/reports/reports_view.dart
+import 'package:dairy_manager/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -89,19 +90,38 @@ class ReportsView extends GetView<ReportsController> {
             Row(
               children: [
                 Expanded(
-                  child: TextButton(
-                    onPressed: () => _selectStartDate(context),
-                    child: Text(
-                      dateFormat.format(controller.filterStartDate.value),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.02,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextButton(
+                      onPressed: () => _selectStartDate(context),
+                      child: Text(
+                        dateFormat.format(controller.filterStartDate.value),
+                      ),
                     ),
                   ),
                 ),
+
                 Text(' to '),
                 Expanded(
-                  child: TextButton(
-                    onPressed: () => _selectEndDate(context),
-                    child: Text(
-                      dateFormat.format(controller.filterEndDate.value),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.02,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextButton(
+                      onPressed: () => _selectEndDate(context),
+                      child: Text(
+                        dateFormat.format(controller.filterEndDate.value),
+                      ),
                     ),
                   ),
                 ),

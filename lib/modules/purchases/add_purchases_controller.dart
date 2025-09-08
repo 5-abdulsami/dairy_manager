@@ -106,7 +106,7 @@ class AddPurchaseController extends GetxController {
       Get.back(result: true);
       Get.snackbar('Success', 'Purchase added successfully');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to add purchase');
+      Get.snackbar('Error', 'Failed to add purchase: $e');
     } finally {
       isLoading.value = false;
     }

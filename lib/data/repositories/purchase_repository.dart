@@ -6,22 +6,24 @@ import 'package:dairy_manager/data/models/purchase_model.dart';
 class PurchaseRepository extends GetxController {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
 
+  // lib/data/repositories/purchase_repository.dart
   Future<int> addPurchase(Purchase purchase) async {
     final db = await _databaseHelper.database;
+    // Use toMap() which excludes supplierName
     return await db.insert('purchases', purchase.toMap());
   }
 
   Future<List<Purchase>> getAllPurchases() async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.rawQuery('''
-      SELECT p.*, s.name as supplierName 
-      FROM purchases p 
-      INNER JOIN suppliers s ON p.supplierId = s.id
-      ORDER BY p.date DESC
-    ''');
+    SELECT p.*, s.name as supplierName 
+    FROM purchases p 
+    INNER JOIN suppliers s ON p.supplierId = s.id
+    ORDER BY p.date DESC
+  ''');
 
     return List.generate(maps.length, (i) {
-      return Purchase.fromMap(maps[i]);
+      return Purchase.fromMap(maps[i]); // Use fromMap for JOIN queries
     });
   }
 
@@ -32,17 +34,17 @@ class PurchaseRepository extends GetxController {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.rawQuery(
       '''
-      SELECT p.*, s.name as supplierName 
-      FROM purchases p 
-      INNER JOIN suppliers s ON p.supplierId = s.id
-      WHERE p.date BETWEEN ? AND ?
-      ORDER BY p.date DESC
-    ''',
+    SELECT p.*, s.name as supplierName 
+    FROM purchases p 
+    INNER JOIN suppliers s ON p.supplierId = s.id
+    WHERE p.date BETWEEN ? AND ?
+    ORDER BY p.date DESC
+  ''',
       [start.toIso8601String(), end.toIso8601String()],
     );
 
     return List.generate(maps.length, (i) {
-      return Purchase.fromMap(maps[i]);
+      return Purchase.fromMap(maps[i]); // Use fromMap for JOIN queries
     });
   }
 
