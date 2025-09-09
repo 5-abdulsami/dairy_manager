@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:dairy_manager/modules/backup/backup_controller.dart';
 
 class BackupView extends GetView<BackupController> {
+  const BackupView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,10 +52,10 @@ class BackupView extends GetView<BackupController> {
                       ? CircularProgressIndicator()
                       : ElevatedButton(
                         onPressed: controller.exportBackup,
-                        child: Text('Create Backup'),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(double.infinity, 50),
                         ),
+                        child: Text('Create Backup'),
                       ),
             ),
           ],
@@ -87,11 +89,11 @@ class BackupView extends GetView<BackupController> {
                       ? CircularProgressIndicator()
                       : ElevatedButton(
                         onPressed: () => _showRestoreDialog(),
-                        child: Text('Restore from Backup'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange,
                           minimumSize: Size(double.infinity, 50),
                         ),
+                        child: Text('Restore from Backup'),
                       ),
             ),
           ],

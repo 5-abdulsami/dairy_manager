@@ -7,9 +7,12 @@ import 'package:dairy_manager/core/constants/app_constants.dart';
 import 'package:dairy_manager/core/utils/pdf_service.dart';
 import 'package:dairy_manager/modules/reports/reports_controller.dart';
 
+// ignore: must_be_immutable
 class ReportsView extends GetView<ReportsController> {
   final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
   var isGeneratingPdf = false.obs;
+
+  ReportsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +35,10 @@ class ReportsView extends GetView<ReportsController> {
         ],
       ),
       body: SingleChildScrollView(
-        // Wrap with SingleChildScrollView
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenHeight * 0.02),
         child: Obx(() {
           if (controller.isLoading.value) {
-            return Container(
+            return SizedBox(
               height: MediaQuery.of(context).size.height * 0.8,
               child: Center(child: CircularProgressIndicator()),
             );
@@ -45,29 +47,29 @@ class ReportsView extends GetView<ReportsController> {
           return Column(
             children: [
               _buildDateFilterSection(context),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.03),
               _buildSummaryCard(
                 'Total Purchases',
                 '${AppConstants.currency}${controller.totalPurchases.value.toStringAsFixed(0)}',
                 Colors.red,
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.025),
               _buildSummaryCard(
                 'Total Sales',
                 '${AppConstants.currency}${controller.totalSales.value.toStringAsFixed(0)}',
                 Colors.green,
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.025),
               _buildSummaryCard(
                 'Profit',
                 '${AppConstants.currency}${controller.profit.value.toStringAsFixed(0)}',
                 controller.profit.value >= 0 ? Colors.blue : Colors.orange,
               ),
-              SizedBox(height: 24),
+              SizedBox(height: screenHeight * 0.03),
               _buildProfitIndicator(),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
               _buildStatisticsInfo(),
-              SizedBox(height: 30), // Extra padding at bottom
+              SizedBox(height: screenHeight * 0.04),
             ],
           );
         }),
@@ -78,7 +80,7 @@ class ReportsView extends GetView<ReportsController> {
   Widget _buildDateFilterSection(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenHeight * 0.02),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,7 +88,7 @@ class ReportsView extends GetView<ReportsController> {
               'Report Period',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: screenHeight * 0.012),
             Row(
               children: [
                 Expanded(

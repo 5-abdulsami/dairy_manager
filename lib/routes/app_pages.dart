@@ -8,6 +8,8 @@ import 'package:dairy_manager/modules/purchases/purchases_binding.dart';
 import 'package:dairy_manager/modules/purchases/purchases_view.dart';
 import 'package:dairy_manager/modules/reports/reports_binding.dart';
 import 'package:dairy_manager/modules/reports/reports_view.dart';
+import 'package:dairy_manager/modules/reports/supplier_report/supplier_report_binding.dart';
+import 'package:dairy_manager/modules/reports/supplier_report/supplier_report_view.dart';
 import 'package:dairy_manager/modules/sales/add_sale_view.dart';
 import 'package:dairy_manager/modules/sales/sales_binding.dart';
 import 'package:dairy_manager/modules/sales/sales_view.dart';
@@ -61,6 +63,11 @@ class AppPages {
       name: _Paths.BACKUP,
       page: () => BackupView(),
       binding: BackupBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUPPLIER_REPORT,
+      page: () => SupplierReportView(),
+      binding: SupplierReportBinding(),
     ),
   ];
 }

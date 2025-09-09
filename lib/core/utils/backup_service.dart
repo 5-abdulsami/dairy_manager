@@ -1,9 +1,9 @@
 // lib/core/utils/backup_service.dart
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:open_file/open_file.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dairy_manager/core/database/database_helper.dart';
@@ -167,7 +167,7 @@ class BackupService {
         }
       });
     } catch (e) {
-      print('Restore error details: $e');
+      log('Restore error details: $e');
       throw Exception('Failed to import data: ${e.toString()}');
     }
   }

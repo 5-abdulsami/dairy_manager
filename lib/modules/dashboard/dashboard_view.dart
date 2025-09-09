@@ -110,6 +110,13 @@ class DashboardView extends GetView<DashboardController> {
                       Colors.purple,
                       () => Get.toNamed(Routes.BACKUP),
                     ),
+                    _buildActionCard(
+                      context,
+                      'Supplier Ledger',
+                      Icons.description,
+                      Colors.purple,
+                      () => Get.toNamed(Routes.SUPPLIER_REPORT),
+                    ),
                   ],
                 ),
               ),

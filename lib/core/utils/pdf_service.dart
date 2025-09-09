@@ -1,5 +1,6 @@
 // lib/core/utils/pdf_service.dart
 import 'dart:io';
+import 'package:dairy_manager/data/models/supplier_report_model.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -305,5 +306,222 @@ class PdfService {
 
   static Future<void> openFile(File file) async {
     await OpenFile.open(file.path);
+  }
+
+  // Add to lib/core/utils/pdf_service.dart
+  static Future<File> generateSupplierReportPdf(SupplierReport report) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.MultiPage(
+        build:
+            (context) => [
+              _buildSupplierReportHeader(report),
+              pw.SizedBox(height: 20),
+              _buildSupplierInfoSection(report),
+              pw.SizedBox(height: 20),
+              _buildSupplierSummarySection(report),
+              pw.SizedBox(height: 20),
+              _buildSupplierPurchasesSection(report),
+            ],
+      ),
+    );
+
+    return _saveDocument(
+      pdf,
+      '${report.supplier.name}_ledger_${DateFormat('yyyyMMdd').format(report.startDate)}_${DateFormat('yyyyMMdd').format(report.endDate)}.pdf',
+    );
+  }
+
+  static pw.Widget _buildSupplierReportHeader(SupplierReport report) {
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          'Mankiala Milk Shop - Supplier Ledger',
+          style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
+        ),
+        pw.Text(
+          'Supplier: ${report.supplier.name}',
+          style: pw.TextStyle(fontSize: 18),
+        ),
+        pw.Text(
+          'Period: ${DateFormat('dd/MM/yyyy').format(report.startDate)} - ${DateFormat('dd/MM/yyyy').format(report.endDate)}',
+          style: pw.TextStyle(fontSize: 14),
+        ),
+        pw.Text(
+          'Generated on: ${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())}',
+          style: pw.TextStyle(fontSize: 12),
+        ),
+      ],
+    );
+  }
+
+  static pw.Widget _buildSupplierInfoSection(SupplierReport report) {
+    return pw.Container(
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: PdfColors.grey300),
+        borderRadius: pw.BorderRadius.circular(5),
+      ),
+      padding: pw.EdgeInsets.all(10),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            'Supplier Information',
+            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.Divider(),
+          pw.Row(children: [pw.Text('Name:'), pw.Text(report.supplier.name)]),
+          pw.Row(
+            children: [
+              pw.Text('Phone:'),
+              pw.Text(report.supplier.phoneNumber ?? 'Not provided'),
+            ],
+          ),
+          pw.Row(
+            children: [
+              pw.Text('Product Type:'),
+              pw.Text(report.supplier.productType),
+            ],
+          ),
+          pw.Row(
+            children: [
+              pw.Text('Rate:'),
+              pw.Text('${AppConstants.currency}${report.supplier.rate}/kg'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  static pw.Widget _buildSupplierSummarySection(SupplierReport report) {
+    return pw.Container(
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: PdfColors.grey300),
+        borderRadius: pw.BorderRadius.circular(5),
+      ),
+      padding: pw.EdgeInsets.all(10),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            'Summary',
+            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.Divider(),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text('Total Transactions:'),
+              pw.Text(report.totalTransactions.toString()),
+            ],
+          ),
+          pw.SizedBox(height: 5),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text('Total Amount:'),
+              pw.Text(
+                '${AppConstants.currency}${report.totalAmount.toStringAsFixed(2)}',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  static pw.Widget _buildSupplierPurchasesSection(SupplierReport report) {
+    return pw.Container(
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: PdfColors.grey300),
+        borderRadius: pw.BorderRadius.circular(5),
+      ),
+      padding: pw.EdgeInsets.all(10),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            'Purchase Details (${report.purchases.length} transactions)',
+            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.Divider(),
+          if (report.purchases.isEmpty) pw.Text('No purchases in this period'),
+          if (report.purchases.isNotEmpty)
+            pw.Table(
+              border: pw.TableBorder.all(color: PdfColors.grey300),
+              children: [
+                pw.TableRow(
+                  children: [
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
+                        'Date',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
+                        'Product',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
+                        'Qty',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
+                        'Amount',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                ...report.purchases
+                    .map(
+                      (purchase) => pw.TableRow(
+                        children: [
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(
+                              DateFormat('dd/MM/yy').format(purchase.date),
+                            ),
+                          ),
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(
+                              '${purchase.productType} (${purchase.unit})',
+                            ),
+                          ),
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(
+                              '${purchase.quantity} ${purchase.unit}',
+                            ),
+                          ),
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(
+                              '${AppConstants.currency}${purchase.totalAmount.toStringAsFixed(2)}',
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ],
+            ),
+        ],
+      ),
+    );
   }
 }
