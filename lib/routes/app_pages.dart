@@ -1,8 +1,10 @@
 // lib/routes/app_pages.dart
+import 'package:dairy_manager/modules/activation/activation_view.dart';
 import 'package:dairy_manager/modules/backup/backup_binding.dart';
 import 'package:dairy_manager/modules/backup/backup_view.dart';
 import 'package:dairy_manager/modules/dashboard/dashboard_binding.dart';
 import 'package:dairy_manager/modules/dashboard/dashboard_view.dart';
+import 'package:dairy_manager/modules/dev/developer_view.dart';
 import 'package:dairy_manager/modules/purchases/add_purchases_view.dart';
 import 'package:dairy_manager/modules/purchases/purchases_binding.dart';
 import 'package:dairy_manager/modules/purchases/purchases_view.dart';
@@ -69,5 +71,7 @@ class AppPages {
       page: () => SupplierReportView(),
       binding: SupplierReportBinding(),
     ),
+    GetPage(name: _Paths.ACTIVATION, page: () => ActivationView()),
+    GetPage(name: _Paths.DEVELOPER, page: () => DeveloperView()),
   ];
 }
