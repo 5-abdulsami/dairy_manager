@@ -1,6 +1,9 @@
 // lib/data/models/sale_model.dart
 class Sale {
   int? id;
+  int customerId;
+  String customerName;
+  String shopName;
   double quantity;
   double rate;
   double totalAmount;
@@ -10,6 +13,9 @@ class Sale {
 
   Sale({
     this.id,
+    required this.customerId,
+    required this.customerName,
+    required this.shopName,
     required this.quantity,
     required this.rate,
     required this.totalAmount,
@@ -21,6 +27,7 @@ class Sale {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'customerId': customerId,
       'quantity': quantity,
       'rate': rate,
       'totalAmount': totalAmount,
@@ -33,9 +40,12 @@ class Sale {
   factory Sale.fromMap(Map<String, dynamic> map) {
     return Sale(
       id: map['id'],
-      quantity: map['quantity'],
-      rate: map['rate'],
-      totalAmount: map['totalAmount'],
+      customerId: map['customerId'],
+      customerName: map['customerName'] ?? '',
+      shopName: map['shopName'] ?? '',
+      quantity: (map['quantity'] as num).toDouble(),
+      rate: (map['rate'] as num).toDouble(),
+      totalAmount: (map['totalAmount'] as num).toDouble(),
       date: DateTime.parse(map['date']),
       productType: map['productType'],
       unit: map['unit'],

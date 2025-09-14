@@ -8,6 +8,8 @@ import 'package:dairy_manager/routes/app_pages.dart';
 import 'package:dairy_manager/modules/suppliers/suppliers_controller.dart';
 
 class SuppliersView extends GetView<SuppliersController> {
+  const SuppliersView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

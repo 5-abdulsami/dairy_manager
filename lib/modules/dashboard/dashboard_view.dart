@@ -7,11 +7,13 @@ import 'package:dairy_manager/core/constants/app_constants.dart';
 import 'package:dairy_manager/modules/dashboard/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
+  const DashboardView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('Mankiala Milk Shop'),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
@@ -54,7 +56,7 @@ class DashboardView extends GetView<DashboardController> {
                 '${AppConstants.currency}${controller.profit.value.toStringAsFixed(0)}',
                 controller.profit.value >= 0 ? Colors.blue : Colors.orange,
               ),
-              SizedBox(height: screenHeight * 0.025), // 20 = 0.025
+              SizedBox(height: screenHeight * 0.025),
               // Quick Actions
               Align(
                 alignment: Alignment.centerLeft,
@@ -65,7 +67,7 @@ class DashboardView extends GetView<DashboardController> {
                   ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: screenHeight * 0.01), // 8 = 0.01
+              SizedBox(height: screenHeight * 0.01),
               Expanded(
                 child: GridView(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -93,8 +95,29 @@ class DashboardView extends GetView<DashboardController> {
                       context,
                       'Suppliers',
                       Icons.people,
-                      Colors.orange,
+                      Colors.blue,
                       () => Get.toNamed(Routes.SUPPLIERS),
+                    ),
+                    _buildActionCard(
+                      context,
+                      'Customers',
+                      Icons.people,
+                      Colors.green,
+                      () => Get.toNamed(Routes.CUSTOMERS),
+                    ),
+                    _buildActionCard(
+                      context,
+                      'Supplier Ledger',
+                      Icons.description,
+                      Colors.blue,
+                      () => Get.toNamed(Routes.SUPPLIER_REPORT),
+                    ),
+                    _buildActionCard(
+                      context,
+                      'Customer Ledger',
+                      Icons.description,
+                      Colors.green,
+                      () => Get.toNamed(Routes.CUSTOMER_REPORT),
                     ),
                     _buildActionCard(
                       context,
@@ -107,15 +130,8 @@ class DashboardView extends GetView<DashboardController> {
                       context,
                       'Backup & Restore',
                       Icons.backup,
-                      Colors.purple,
+                      Colors.redAccent,
                       () => Get.toNamed(Routes.BACKUP),
-                    ),
-                    _buildActionCard(
-                      context,
-                      'Supplier Ledger',
-                      Icons.description,
-                      Colors.purple,
-                      () => Get.toNamed(Routes.SUPPLIER_REPORT),
                     ),
                   ],
                 ),
@@ -130,7 +146,7 @@ class DashboardView extends GetView<DashboardController> {
   Widget _buildSummaryCard(String title, String value, Color color) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(screenHeight * 0.02), // 16 = 0.02
+        padding: EdgeInsets.all(screenHeight * 0.02),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -142,7 +158,7 @@ class DashboardView extends GetView<DashboardController> {
             Text(
               value,
               style: TextStyle(
-                fontSize: screenHeight * 0.035, // 28 = 0.035
+                fontSize: screenHeight * 0.035,
                 fontWeight: FontWeight.bold,
                 color: color,
               ),
@@ -165,12 +181,12 @@ class DashboardView extends GetView<DashboardController> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: Padding(
-          padding: EdgeInsets.all(screenHeight * 0.01), // 8 = 0.01
+          padding: EdgeInsets.all(screenHeight * 0.01),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: screenHeight * 0.06, color: color),
-              SizedBox(height: screenHeight * 0.01), // 8 = 0.01
+              SizedBox(height: screenHeight * 0.01),
               Text(title, style: Theme.of(context).textTheme.bodyLarge),
             ],
           ),

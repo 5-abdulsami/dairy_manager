@@ -1,13 +1,17 @@
 // lib/modules/suppliers/add_supplier_view.dart
 import 'package:dairy_manager/core/widgets/custom_button.dart';
+import 'package:dairy_manager/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dairy_manager/core/constants/app_constants.dart';
-import 'package:dairy_manager/modules/suppliers/add_supplier_controller.dart';
+import 'package:dairy_manager/modules/suppliers/add_supplier/add_supplier_controller.dart';
 
 class AddSupplierView extends GetView<AddSupplierController> {
   final _formKey = GlobalKey<FormState>();
+  @override
   final controller = Get.put(AddSupplierController());
+
+  AddSupplierView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,7 @@ class AddSupplierView extends GetView<AddSupplierController> {
       appBar: AppBar(title: Text('Add Supplier')),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(screenHeight * 0.022),
           child: Form(
             key: _formKey,
             child: Column(
@@ -33,7 +37,7 @@ class AddSupplierView extends GetView<AddSupplierController> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: screenHeight * 0.022),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Phone Number',
@@ -58,7 +62,7 @@ class AddSupplierView extends GetView<AddSupplierController> {
                       }).toList(),
                   onChanged: (value) => controller.setProductType(value!),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: screenHeight * 0.022),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Rate per kg (Rs.) *',
@@ -75,7 +79,7 @@ class AddSupplierView extends GetView<AddSupplierController> {
                     return null;
                   },
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: screenHeight * 0.034),
                 Obx(
                   () =>
                       controller.isLoading.value

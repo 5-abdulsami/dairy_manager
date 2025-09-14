@@ -10,12 +10,14 @@ import 'package:dairy_manager/core/database/database_helper.dart';
 import 'package:dairy_manager/data/repositories/supplier_repository.dart';
 import 'package:dairy_manager/data/repositories/purchase_repository.dart';
 import 'package:dairy_manager/data/repositories/sale_repository.dart';
+import 'package:dairy_manager/data/repositories/customer_repository.dart';
 
 class BackupService {
   static final DatabaseHelper _databaseHelper = DatabaseHelper();
   static final SupplierRepository _supplierRepo = Get.find();
   static final PurchaseRepository _purchaseRepo = Get.find();
   static final SaleRepository _saleRepo = Get.find();
+  static final CustomerRepository _customerRepo = Get.find();
 
   // Request storage permission
   static Future<bool> requestStoragePermission() async {
@@ -32,23 +34,30 @@ class BackupService {
 
       // Get all data from database
       final suppliers = await _supplierRepo.getAllSuppliers();
+      final customers = await _customerRepo.getAllCustomers();
       final purchases = await _purchaseRepo.getAllPurchases();
       final sales = await _saleRepo.getAllSales();
 
-      // Convert to JSON - REMOVE supplierName from purchases
+      // Convert to JSON - Remove joined fields
       final backupData = {
         'app_name': 'Mankiala Milk Shop',
         'backup_date': DateTime.now().toIso8601String(),
         'version': '1.0.0',
         'suppliers': suppliers.map((s) => s.toMap()).toList(),
+        'customers': customers.map((c) => c.toMap()).toList(),
         'purchases':
             purchases.map((p) {
               final map = p.toMap();
-              // Ensure supplierName is not included in the backup
-              map.remove('supplierName');
+              map.remove('supplierName'); // Remove joined field
               return map;
             }).toList(),
-        'sales': sales.map((s) => s.toMap()).toList(),
+        'sales':
+            sales.map((s) {
+              final map = s.toMap();
+              map.remove('customerName'); // Remove joined field
+              map.remove('shopName'); // Remove joined field
+              return map;
+            }).toList(),
       };
 
       // Convert to JSON string and then to bytes
@@ -116,6 +125,7 @@ class BackupService {
       await db.transaction((txn) async {
         // Clear existing data
         await txn.delete('suppliers');
+        await txn.delete('customers');
         await txn.delete('purchases');
         await txn.delete('sales');
 
@@ -134,7 +144,22 @@ class BackupService {
           await txn.insert('suppliers', mappedData);
         }
 
-        // Import purchases - REMOVE supplierName handling completely
+        // Import customers
+        final customers = backupData['customers'] as List? ?? [];
+        for (final customerData in customers) {
+          final mappedData = {
+            'id': customerData['id'],
+            'name': customerData['name'] ?? 'Unknown Customer',
+            'phoneNumber': customerData['phoneNumber'],
+            'shopName': customerData['shopName'] ?? 'Unknown Shop',
+            'address': customerData['address'],
+            'createdAt':
+                customerData['createdAt'] ?? DateTime.now().toIso8601String(),
+          };
+          await txn.insert('customers', mappedData);
+        }
+
+        // Import purchases
         final purchases = backupData['purchases'] as List? ?? [];
         for (final purchaseData in purchases) {
           final mappedData = {
@@ -156,6 +181,7 @@ class BackupService {
         for (final saleData in sales) {
           final mappedData = {
             'id': saleData['id'],
+            'customerId': saleData['customerId'] ?? 0,
             'quantity': (saleData['quantity'] as num?)?.toDouble() ?? 0.0,
             'rate': (saleData['rate'] as num?)?.toDouble() ?? 0.0,
             'totalAmount': (saleData['totalAmount'] as num?)?.toDouble() ?? 0.0,

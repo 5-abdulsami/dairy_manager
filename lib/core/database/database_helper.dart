@@ -22,44 +22,55 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    // Create suppliers table
     await db.execute('''
-      CREATE TABLE suppliers(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        phoneNumber TEXT,
-        productType TEXT NOT NULL,
-        rate REAL NOT NULL,
-        createdAt TEXT NOT NULL
-      )
-    ''');
+    CREATE TABLE suppliers(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      phoneNumber TEXT,
+      productType TEXT NOT NULL,
+      rate REAL NOT NULL,
+      createdAt TEXT NOT NULL
+    )
+  ''');
 
-    // Create purchases table
     await db.execute('''
-      CREATE TABLE purchases(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        supplierId INTEGER NOT NULL,
-        quantity REAL NOT NULL,
-        rate REAL NOT NULL,
-        totalAmount REAL NOT NULL,
-        date TEXT NOT NULL,
-        productType TEXT NOT NULL,
-        unit TEXT NOT NULL,
-        FOREIGN KEY (supplierId) REFERENCES suppliers (id)
-      )
-    ''');
+    CREATE TABLE customers(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      phoneNumber TEXT,
+      shopName TEXT NOT NULL,
+      address TEXT,
+      createdAt TEXT NOT NULL
+    )
+  ''');
 
-    // Create sales table
+    // Create purchases table (existing)
     await db.execute('''
-      CREATE TABLE sales(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        productType TEXT NOT NULL,
-        quantity REAL NOT NULL,
-        rate REAL NOT NULL,
-        totalAmount REAL NOT NULL,
-        date TEXT NOT NULL,
-        unit TEXT NOT NULL
-      )
-    ''');
+    CREATE TABLE purchases(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      supplierId INTEGER NOT NULL,
+      quantity REAL NOT NULL,
+      rate REAL NOT NULL,
+      totalAmount REAL NOT NULL,
+      date TEXT NOT NULL,
+      productType TEXT NOT NULL,
+      unit TEXT NOT NULL,
+      FOREIGN KEY (supplierId) REFERENCES suppliers (id)
+    )
+  ''');
+
+    await db.execute('''
+    CREATE TABLE sales(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      customerId INTEGER NOT NULL,
+      quantity REAL NOT NULL,
+      rate REAL NOT NULL,
+      totalAmount REAL NOT NULL,
+      date TEXT NOT NULL,
+      productType TEXT NOT NULL,
+      unit TEXT NOT NULL,
+      FOREIGN KEY (customerId) REFERENCES customers (id)
+    )
+  ''');
   }
 }

@@ -1,9 +1,11 @@
 // lib/modules/suppliers/suppliers_binding.dart
-import 'package:dairy_manager/data/repositories/purchase_repository.dart';
-import 'package:dairy_manager/data/repositories/sale_repository.dart';
-import 'package:dairy_manager/data/repositories/supplier_repository.dart';
 import 'package:dairy_manager/modules/dashboard/dashboard_controller.dart';
 import 'package:get/get.dart';
+
+import '../../data/repositories/customer_repository.dart';
+import '../../data/repositories/purchase_repository.dart';
+import '../../data/repositories/sale_repository.dart';
+import '../../data/repositories/supplier_repository.dart';
 
 class DashboardBinding extends Bindings {
   @override
@@ -12,5 +14,6 @@ class DashboardBinding extends Bindings {
     Get.lazyPut(() => SupplierRepository(), fenix: true);
     Get.lazyPut(() => PurchaseRepository(), fenix: true);
     Get.lazyPut(() => SaleRepository(), fenix: true);
+    Get.lazyPut(() => CustomerRepository(), fenix: true);
   }
 }

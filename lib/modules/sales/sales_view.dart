@@ -1,5 +1,6 @@
 // lib/modules/sales/sales_view.dart
 import 'package:dairy_manager/data/models/sale_model.dart';
+import 'package:dairy_manager/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,8 @@ import 'package:dairy_manager/modules/sales/sales_controller.dart';
 
 class SalesView extends GetView<SalesController> {
   final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+
+  SalesView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +51,9 @@ class SalesView extends GetView<SalesController> {
 
   Widget _buildFilterSection(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(16),
+      margin: EdgeInsets.all(screenHeight * 0.022),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenHeight * 0.022),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -58,7 +61,7 @@ class SalesView extends GetView<SalesController> {
               'Filter by Date',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: screenHeight * 0.01),
             Row(
               children: [
                 Expanded(
@@ -89,10 +92,13 @@ class SalesView extends GetView<SalesController> {
   Widget _buildSummaryCard() {
     return Obx(
       () => Card(
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.048,
+          vertical: screenHeight * 0.01,
+        ),
         color: Colors.green[50],
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(screenHeight * 0.022),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

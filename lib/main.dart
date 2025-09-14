@@ -1,4 +1,5 @@
 // lib/main.dart
+import 'package:dairy_manager/data/repositories/customer_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dairy_manager/core/theme/app_theme.dart';
@@ -6,7 +7,7 @@ import 'package:dairy_manager/routes/app_pages.dart';
 import 'package:dairy_manager/data/repositories/supplier_repository.dart';
 import 'package:dairy_manager/data/repositories/purchase_repository.dart';
 import 'package:dairy_manager/data/repositories/sale_repository.dart';
-import 'package:dairy_manager/core/utils/activation_service.dart';
+import 'package:dairy_manager/core/services/activation_service.dart';
 
 double get screenWidth => Get.width;
 double get screenHeight => Get.height;
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
                 Get.lazyPut(() => SupplierRepository(), fenix: true);
                 Get.lazyPut(() => PurchaseRepository(), fenix: true);
                 Get.lazyPut(() => SaleRepository(), fenix: true);
+                Get.lazyPut(() => CustomerRepository(), fenix: true);
               })
               : null,
       debugShowCheckedModeBanner: false,

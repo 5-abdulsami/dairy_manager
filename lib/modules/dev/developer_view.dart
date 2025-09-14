@@ -2,7 +2,7 @@
 import 'package:dairy_manager/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dairy_manager/core/utils/activation_service.dart';
+import 'package:dairy_manager/core/services/activation_service.dart';
 
 class DeveloperView extends StatefulWidget {
   @override

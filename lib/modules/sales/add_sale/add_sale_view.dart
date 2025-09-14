@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:dairy_manager/core/constants/app_constants.dart';
-import 'package:dairy_manager/modules/sales/add_sale_controller.dart';
+import 'package:dairy_manager/modules/sales/add_sale/add_sale_controller.dart';
+
+import '../../../data/models/customer_model.dart';
 
 class AddSaleView extends GetView<AddSaleController> {
   final _formKey = GlobalKey<FormState>();
@@ -21,6 +23,34 @@ class AddSaleView extends GetView<AddSaleController> {
           key: _formKey,
           child: ListView(
             children: [
+              // lib/modules/sales/add_sale_view.dart - Update to include customer selection
+              // Add this at the beginning of the ListView children:
+              Obx(
+                () => DropdownButtonFormField<Customer>(
+                  decoration: InputDecoration(
+                    labelText: 'Customer *',
+                    border: OutlineInputBorder(),
+                  ),
+                  value: controller.selectedCustomer.value,
+                  items:
+                      controller.customers.map((Customer customer) {
+                        return DropdownMenuItem<Customer>(
+                          value: customer,
+                          child: Text(
+                            '${customer.name} (${customer.shopName})',
+                          ),
+                        );
+                      }).toList(),
+                  onChanged: controller.setSelectedCustomer,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a customer';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(

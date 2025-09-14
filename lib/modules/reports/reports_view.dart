@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:dairy_manager/core/constants/app_constants.dart';
-import 'package:dairy_manager/core/utils/pdf_service.dart';
+import 'package:dairy_manager/core/services/pdf_service.dart';
 import 'package:dairy_manager/modules/reports/reports_controller.dart';
 
 // ignore: must_be_immutable

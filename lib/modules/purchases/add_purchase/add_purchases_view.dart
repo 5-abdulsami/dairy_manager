@@ -2,7 +2,7 @@
 import 'package:dairy_manager/core/widgets/custom_button.dart';
 import 'package:dairy_manager/data/models/supplier_model.dart';
 import 'package:dairy_manager/main.dart';
-import 'package:dairy_manager/modules/purchases/add_purchases_controller.dart';
+import 'package:dairy_manager/modules/purchases/add_purchase/add_purchases_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

@@ -15,6 +15,9 @@ abstract class Routes {
   static const SUPPLIER_REPORT = _Paths.SUPPLIER_REPORT;
   static const ACTIVATION = _Paths.ACTIVATION;
   static const DEVELOPER = _Paths.DEVELOPER;
+  static const CUSTOMERS = _Paths.CUSTOMERS;
+  static const ADD_CUSTOMER = _Paths.ADD_CUSTOMER;
+  static const CUSTOMER_REPORT = _Paths.CUSTOMER_REPORT;
 }
 
 abstract class _Paths {
@@ -31,4 +34,7 @@ abstract class _Paths {
   static const SUPPLIER_REPORT = '/supplier-report';
   static const ACTIVATION = '/activation';
   static const DEVELOPER = '/developer';
+  static const CUSTOMERS = '/customers';
+  static const ADD_CUSTOMER = '/add-customer';
+  static const CUSTOMER_REPORT = '/customer-report';
 }

@@ -3,10 +3,12 @@ import 'package:dairy_manager/main.dart';
 import 'package:dairy_manager/modules/dev/developer_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dairy_manager/core/utils/activation_service.dart';
+import 'package:dairy_manager/core/services/activation_service.dart';
 import 'package:dairy_manager/routes/app_pages.dart';
 
 class ActivationView extends StatefulWidget {
+  const ActivationView({super.key});
+
   @override
   _ActivationViewState createState() => _ActivationViewState();
 }
@@ -23,27 +25,27 @@ class _ActivationViewState extends State<ActivationView> {
       backgroundColor: Colors.grey[100],
       body: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(screenHeight * 0.03),
           child: Card(
             elevation: 4,
             child: Padding(
-              padding: EdgeInsets.all(24),
+              padding: EdgeInsets.all(screenHeight * 0.034),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.vpn_key, size: 64, color: Colors.blue),
-                  SizedBox(height: 16),
+                  SizedBox(height: screenHeight * 0.022),
                   Text(
                     'Activate App',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: screenHeight * 0.012),
                   Text(
                     'Enter your 6-digit activation code to continue',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey[600]),
                   ),
-                  SizedBox(height: 24),
+                  SizedBox(height: screenHeight * 0.022),
                   Form(
                     key: _formKey,
                     child: TextFormField(
@@ -66,24 +68,24 @@ class _ActivationViewState extends State<ActivationView> {
                       },
                     ),
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: screenHeight * 0.022),
                   if (_errorMessage.isNotEmpty)
                     Text(
                       _errorMessage,
                       style: TextStyle(color: Colors.red, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
-                  SizedBox(height: 16),
+                  SizedBox(height: screenHeight * 0.022),
                   _isLoading
                       ? CircularProgressIndicator()
                       : ElevatedButton(
                         onPressed: _activateApp,
-                        child: Text('Activate App'),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(double.infinity, 50),
                         ),
+                        child: Text('Activate App'),
                       ),
-                  SizedBox(height: 16),
+                  SizedBox(height: screenHeight * 0.022),
                   TextButton(
                     onPressed: _showHelp,
                     child: Text('Need an activation code? Contact developer'),

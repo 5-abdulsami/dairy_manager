@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:dairy_manager/core/constants/app_constants.dart';
 import 'package:dairy_manager/data/models/report_model.dart';
 
+import '../../data/models/customer_report_model.dart';
+
 class PdfService {
   static Future<File> generateReportPdf(Report report) async {
     final pdf = pw.Document();
@@ -241,6 +243,13 @@ class PdfService {
                     pw.Padding(
                       padding: pw.EdgeInsets.all(5),
                       child: pw.Text(
+                        'Customer',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
                         'Product',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                       ),
@@ -270,6 +279,10 @@ class PdfService {
                             child: pw.Text(
                               DateFormat('dd/MM/yy').format(sale.date),
                             ),
+                          ),
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(sale.customerName),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(5),
@@ -308,7 +321,7 @@ class PdfService {
     await OpenFile.open(file.path);
   }
 
-  // Add to lib/core/utils/pdf_service.dart
+  // Supplier PDF Report
   static Future<File> generateSupplierReportPdf(SupplierReport report) async {
     final pdf = pw.Document();
 
@@ -512,6 +525,223 @@ class PdfService {
                             padding: pw.EdgeInsets.all(5),
                             child: pw.Text(
                               '${AppConstants.currency}${purchase.totalAmount.toStringAsFixed(2)}',
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  // Customer PDF Report
+  static Future<File> generateCustomerReportPdf(CustomerReport report) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.MultiPage(
+        build:
+            (context) => [
+              _buildCustomerReportHeader(report),
+              pw.SizedBox(height: 20),
+              _buildCustomerInfoSection(report),
+              pw.SizedBox(height: 20),
+              _buildCustomerSummarySection(report),
+              pw.SizedBox(height: 20),
+              _buildCustomerSalesSection(report),
+            ],
+      ),
+    );
+
+    return _saveDocument(
+      pdf,
+      '${report.customer.name}_ledger_${DateFormat('yyyyMMdd').format(report.startDate)}_${DateFormat('yyyyMMdd').format(report.endDate)}.pdf',
+    );
+  }
+
+  static pw.Widget _buildCustomerReportHeader(CustomerReport report) {
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          'Mankiala Milk Shop - Customer Ledger',
+          style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
+        ),
+        pw.Text(
+          'Customer: ${report.customer.name}',
+          style: pw.TextStyle(fontSize: 18),
+        ),
+        pw.Text(
+          'Shop: ${report.customer.shopName}',
+          style: pw.TextStyle(fontSize: 16),
+        ),
+        pw.Text(
+          'Period: ${DateFormat('dd/MM/yyyy').format(report.startDate)} - ${DateFormat('dd/MM/yyyy').format(report.endDate)}',
+          style: pw.TextStyle(fontSize: 14),
+        ),
+        pw.Text(
+          'Generated on: ${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())}',
+          style: pw.TextStyle(fontSize: 12),
+        ),
+      ],
+    );
+  }
+
+  static pw.Widget _buildCustomerInfoSection(CustomerReport report) {
+    return pw.Container(
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: PdfColors.grey300),
+        borderRadius: pw.BorderRadius.circular(5),
+      ),
+      padding: pw.EdgeInsets.all(10),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            'Customer Information',
+            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.Divider(),
+          pw.Row(children: [pw.Text('Name:'), pw.Text(report.customer.name)]),
+          pw.Row(
+            children: [pw.Text('Shop:'), pw.Text(report.customer.shopName)],
+          ),
+          pw.Row(
+            children: [
+              pw.Text('Phone:'),
+              pw.Text(report.customer.phoneNumber ?? 'Not provided'),
+            ],
+          ),
+          if (report.customer.address != null)
+            pw.Row(
+              children: [
+                pw.Text('Address:'),
+                pw.Text(report.customer.address!),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  static pw.Widget _buildCustomerSummarySection(CustomerReport report) {
+    return pw.Container(
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: PdfColors.grey300),
+        borderRadius: pw.BorderRadius.circular(5),
+      ),
+      padding: pw.EdgeInsets.all(10),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            'Summary',
+            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.Divider(),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text('Total Transactions:'),
+              pw.Text(report.totalTransactions.toString()),
+            ],
+          ),
+          pw.SizedBox(height: 5),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text('Total Amount:'),
+              pw.Text(
+                '${AppConstants.currency}${report.totalAmount.toStringAsFixed(0)}',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  static pw.Widget _buildCustomerSalesSection(CustomerReport report) {
+    return pw.Container(
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: PdfColors.grey300),
+        borderRadius: pw.BorderRadius.circular(5),
+      ),
+      padding: pw.EdgeInsets.all(10),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            'Sales Details (${report.sales.length} transactions)',
+            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.Divider(),
+          if (report.sales.isEmpty) pw.Text('No sales in this period'),
+          if (report.sales.isNotEmpty)
+            pw.Table(
+              border: pw.TableBorder.all(color: PdfColors.grey300),
+              children: [
+                pw.TableRow(
+                  children: [
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
+                        'Date',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
+                        'Product',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
+                        'Qty',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(5),
+                      child: pw.Text(
+                        'Amount',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                ...report.sales
+                    .map(
+                      (sale) => pw.TableRow(
+                        children: [
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(
+                              DateFormat('dd/MM/yy').format(sale.date),
+                            ),
+                          ),
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(
+                              '${sale.productType} (${sale.unit})',
+                            ),
+                          ),
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text('${sale.quantity} ${sale.unit}'),
+                          ),
+                          pw.Padding(
+                            padding: pw.EdgeInsets.all(5),
+                            child: pw.Text(
+                              '${AppConstants.currency}${sale.totalAmount.toStringAsFixed(0)}',
                             ),
                           ),
                         ],
