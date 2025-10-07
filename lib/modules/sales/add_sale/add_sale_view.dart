@@ -136,11 +136,14 @@ class AddSaleView extends GetView<AddSaleController> {
                   children: [
                     Icon(Icons.calendar_today),
                     SizedBox(width: screenWidth * 0.02),
-                    Text(
-                      'Date: ${dateFormat.format(controller.date.value)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: screenHeight * 0.025,
+                    Obx(
+                      () => Text(
+                        // Wrap with Obx
+                        'Date: ${dateFormat.format(controller.date.value)}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenHeight * 0.025,
+                        ),
                       ),
                     ),
                   ],

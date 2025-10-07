@@ -136,13 +136,13 @@ class AddPurchaseView extends GetView<AddPurchaseController> {
                   children: [
                     Icon(Icons.calendar_today),
                     SizedBox(width: screenWidth * 0.02),
-                    Text(
-                      'Date: ${dateFormat.format(controller.date.value)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
+                     Obx(() => Text( // Wrap with Obx
+        'Date: ${dateFormat.format(controller.date.value)}',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      )),
                   ],
                 ),
               ),
