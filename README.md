@@ -1,4 +1,4 @@
-# Dairy Manager — Mankiala Milk Shop Manager
+# Dairy Manager App
 
 A comprehensive, offline-first dairy management application built with Flutter, designed to streamline the tracking of milk sales, purchases, customers, and suppliers. It features robust PDF reporting, secure local storage, and app activation controls.
 
